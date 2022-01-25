@@ -1,0 +1,152 @@
+{% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body_block %}
+<div class=''>
+{% for it in item %}
+
+
+<!--for upper look-->
+{% comment %} class="upper-look" style='margin:0em;' {% endcomment %}
+<div   >
+
+<div class="">
+<img  class="im" src="{{it.item_image.url}}" alt='{{it.item_name}}' width='500' height='480' / >
+</div>
+<div  style='text-align:center;' >
+
+
+<div class='item-dis' style='font-size:1.5em;'>
+
+
+<div class='butten' style='float:right;padding:30px;margin:10px;border:2px solid grey; margin-right:20px;font-size:1.3em;'>
+
+<p>Share:
+<a href='https://web.whatsapp.com'target='_blank' ><img src='{% static 'myapp/image/whatsapp-icon.png'   %}' alt='whatApp' width='21' height='21' / ></a>
+<a href='https://www.facebook.com' target='_blank' ><img src='{% static 'myapp/image/facebook-icon.jpg'   %}' alt='facebook' width='21' height='21' / ></a>
+<a href='https://twitter.com' target='_blank'  ><img src='{% static 'myapp/image/tweeter-icon.png'   %}' alt='Twitter' width='21' height='21' / ></a>
+<a href='https://webmail.au.syrahost.com' target='_blank'><img src='{% static 'myapp/image/email.jpg'   %}' alt='Email' width='25' height='25' / ></a>
+</p>
+
+ <center><p>Quality : {{it.quality}}</p><center>
+<p><a href ='#' class='' ><button type="button" class='btn btn-success cart-btn'style='width:15em;font-size:0.7em;border-radius: 12px;' >Buy Now </button></a></p>
+<p><a href ='#' class='' ><button type="button" class='btn btn-primary cart-btn' style='width:15em;font-size:0.7em;border-radius: 12px;'>Add to Cart</button></a></p>
+<p>@ Fulfilled FREE Delivery </p>
+</div>
+<h2  > {{it.item_discription}} </h2>
+<p>M.R.P.:₹ <span style='text-decoration: line-through'>	{{it.item_Price}}</span></p>
+
+<p>Deal of the Day:	₹{{item_total}} Fulfilled</p>
+
+<p>You Save:	₹{{it.item_offer}} ({{offer_perent}}%)</p>
+<p>Inclusive of all taxes
+FREE delivery: Saturday, Nov 6 Details</p>
+<p > Sold By : {{it.sold_by}} </p>
+<p> In Stock : {{it.in_stoke}} items </p>
+</div>
+
+<div class='share' style='font-size:1.5em;color:blue;'>
+Share:
+<a href='https://web.whatsapp.com'target='_blank' ><img src='{% static 'myapp/image/whatsapp-icon.png'   %}' alt='whatApp' width='21' height='21' / ></a>
+<a href='https://www.facebook.com' target='_blank' ><img src='{% static 'myapp/image/facebook-icon.jpg'   %}' alt='facebook' width='21' height='21' / ></a>
+<a href='https://twitter.com' target='_blank'  ><img src='{% static 'myapp/image/tweeter-icon.png'   %}' alt='Twitter' width='21' height='21' / ></a>
+<a href='https://webmail.au.syrahost.com' target='_blank'><img src='{% static 'myapp/image/email.jpg'   %}' alt='Email' width='25' height='25' / ></a>
+</div>
+
+<div class='parent-block'  >
+<p> Delivery:</p>
+<div class='child-block' >
+<img  onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/pay-on-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p onclick="myFun(this)">Pay on delivery</P>
+</div>
+<div class="child-block" >
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/10-days-returnable.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p>10 days returnable </P>
+</div>
+<div class="child-block" >
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/Amazon-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p>Amazon delivery</P>
+</div>
+<div class="child-block">
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/No-contact-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p>No-contact</P>
+</div>
+<h2 id='dh1'> </h2>
+<p id ='db1'> </p> 
+
+</div>
+</div>
+</div>
+{% endfor %}
+
+<!--Have a question-->
+<div class='jumbotron' style='clear:left;'>
+<center>
+<h1 > Have a Question ? </h1>
+<form method='POST'>
+{% csrf_token %}
+{{form.as_p}}
+<input type='submit' value='Add your question' class='btn btn-primary buy-btn'>
+</form>
+ {% if qust %}
+ {% for q in qust  %}
+ {% if q.answer %}
+ <p > Related Question and answer : </p>
+ <p > Question : {{q.question}}</p>
+ <p> Answer:  {{q.answer}} </p>
+ {% endif %}
+ {% endfor %}
+ {% endif %}
+
+</center>
+
+</div>
+
+
+<!--related items-->
+
+ <h3>Customers who bought this item also bought</h3> 
+
+<div class=''>
+<center > <h3> Related items </h3> </center>
+ <div class="card-group  "  >
+{% for itm in related_item %}
+  <div class="card " >
+    <a href={% url 'kitchen'  itm.pk %} >
+    <img id='kitchen1' src="{{itm.item_image.url}}" class="card-img-top" alt="{{itm.time_name}}" width='100' height='250'>
+    <div class="card-body cards">
+      <p >{{itm.item_discription}}</p>
+      {% if itm.item_offer > 0 %}
+      <p >{{itm.item_name}} Price:   <span style='text-decoration: line-through'  > {{itm.item_Price}}</span></p>
+      <p > Save :{{itm.item_offer}}</p>
+      {% else %}
+      <p> {{itm.item_name}} Price :{{itm.item_Price}}</p>
+      {% endif %}
+    </div>
+  </a>
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+<!-- Have a comment-->
+<div class='jumbotron'>
+<center>
+<h1 > Add a comment </h1>
+<form method="post" style="margin-top: 1.3em;">
+        {{ form1.as_p}}
+        {% csrf_token %}
+
+       
+        <button type="submit" class="btn btn-primary buy-btn ">Add Comments</button>
+    
+      </form> 
+
+</center>
+</div>
+
+
+</div>
+ 
+<script src='{% static 'myapp/js/jscript.js' %}'></script>
+{% endblock  %}

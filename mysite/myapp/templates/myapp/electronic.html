@@ -1,0 +1,141 @@
+{% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body_block %}
+<div class=''>
+<p id='pid'> </p>
+<script src='{% static 'js/jscript.js' %}'></script>
+<img id = 'p-id' src='{% static 'myapp/image/imageE5.jpg' %}' alt='' class='im' width='500' height='500' / >
+
+<div class='text-class' style='font-size:2.5em; text-align: justify; margin:0.5em ; '>
+<p style='margin-right:1em;' class='para'>Sony WF-1000XM3 Industry Leading Active Noise Cancellation True Wireless (TWS) Bluetooth 5.0 Earbuds with 32hr Battery Life, Alexa Voice Control & mic for Phone Calls Suitable for Workout, WFH (Black)</p>
+</div >
+<p id='second'> </p>
+<div style='' >
+<p class='seprate' style='display:inline;' > M.R.P.:	₹15,990.00
+<img id ='secondE' src='{% static 'sale/image/imageE1.jpg' %}' style='float:right; margin: 1em;' width='340' height='340'  >
+</p>
+<p class='seprate'>Price:	₹9,999.00</p>
+<p class='seprate'>You Save:	₹5,991.00 (37%)</p>
+<p class='seprate'>Inclusive of all taxes </p>
+
+
+
+
+<p class='seprate' style='  font-size:1.5em;'> Share : <a href='https://web.whatsapp.com'  target='_blank'><i class="bi bi-whatsapp"></i> Whatsapp</a>
+           <a href='https://www.facebook.com' target='_blank'><i class="bi bi-facebook"></i> Facebook</a>
+           <a href='https://webmail.au.syrahost.com' target='_blank'><i class=""><span class="glyphicon glyphicon-envelope"></span></i> Email</a>
+           <a href='https://twitter.com' target='_blank'><i class="bi bi-twitter"></i> Twitter</a>
+</p>
+
+<form >
+<label for="quality" style='font-size:1.5em;'>Quality:</label>
+
+<select name="quality" id="quality">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+</select>
+</form>
+
+
+<div class=''>
+<a href ='#' class='' ><button type="button" class='btn btn-success buy-btn' style='margin: 1em;'>Buy Now </button></a>
+</div>
+
+<div >
+<a href ='#' class='' ><button type="button" class='btn btn-primary buy-btn' >Add to Cart</button></a>
+</div>
+</div>
+
+
+</div>
+
+
+<!--##################### crete form ##########################-->
+
+
+<div style='clear:left; margin: 2.5em;' class=''>
+<div class='container'>
+<div class='jumbotron'>
+
+<!--##################### question form ##########################-->
+<div class='' style='float:right;  ' >
+<h2 style='font-size:3.6em; margin-bottom: 1em; padding:center;' class='h2-head'> Have a Question ? </h2>
+<p style='  font-size:1.5em;' class='seprate'> Q&As form to get help </p>
+
+<form method='post'>
+{% csrf_token %}
+
+{{form2.as_p}}
+   <center>
+   <button type="submit" class="btn btn-primary buy-btn" style=''>Apply Question</button>
+   </center>
+</form>
+
+
+
+<div class=''>
+{% if post2 %}
+<ul>
+{% for post in post2   %}
+
+<li class='comment_display' > {{post.user_name}}</li>
+<p class='seprate' style='  font-size:1.5em;' > {{post.question}}</p>
+
+{% endfor %}
+
+</ul>
+{% endif %}
+</div>
+</div>
+
+<!--############## for form #######################-->
+<div style='float:left'>
+<h2 style='font-size:3.6em;'> Add a Comment </h2>
+{% if user.is_authenticated %}
+{% comment %} <form method='post'> {% endcomment %}
+{% comment %} {% load crispy_forms_tags %} {% endcomment %}
+<div>
+
+      <form method="post" style="margin-top: 1.3em;">
+        {{ form.as_p}}
+        {% csrf_token %}
+
+       <center>
+        <button type="submit" class="btn btn-primary buy-btn ">Published</button>
+      </center>
+      </form> 
+  </div>
+{% else %}
+   <h4> To Add Comment Login Please! </h4>
+   <a href="{% url 'login' %}" class='btn btn-primary'><span class="glyphicon glyphicon-log-in"></span> Login</a>
+{% endif %}
+<!--############################### for comments ########################-->
+
+<h2 style='font-size:3.6em;'>Comments</h2>
+{% if post %} 
+<ul>
+{% for article  in post %}
+<div class='' >
+
+    <li class='comment_display'  >{{ article.author }} - {{ article.published_date|date }}</li>
+    <p  class='seprate' style='  font-size:1.5em;' >  {{ article.comment }} </p>
+
+  </div>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+{% endblock %}

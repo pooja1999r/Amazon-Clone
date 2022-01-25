@@ -1,0 +1,33 @@
+{% extends 'myapp/base.html' %}
+
+{% block body_block%}
+<div class="jumbotron">
+{% for it in item  %}
+<a href={% url 'kitchen'  it.pk %}   >
+  <div class="row" style='border:1px solid grey; padding:2px;'>
+    
+    <div class="col align-self-center text-center ">
+    {% if it.item_image %}
+      <img src= '{{it.item_image.url}}' alt='{{it.item_name}}'width='300' height='300' / >
+      {% else %}
+      <p> saller doesn't provide image </P>
+      {% endif %}
+    </div>
+    <div class="col  align-self-center text-center ">
+      <p > {{it.item_discription}}</p>
+      {% if it.item_offer > 0 %}
+       <p> {{it.item_name}} Price: <span style='text-decoration: line-through'>₹  {{it.item_Price}} </span></p>
+       <p> Save : ₹ {{it.item_Price}}</p>
+       {% else %}
+       <p> {{it.item_name}} Price: ₹ {{it.item_Price}} </p>
+      {% endif %}
+      <p> In Stock: {{it.in_stoke}}</p>
+      <p> Sold By: {{it.sold_by}}</p>
+    </div>
+    
+    </div>
+    </a>
+    {% endfor %}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,301 @@
+{% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block body_block %}
+
+<div class="container-fluid">
+
+<div class='row '>
+ {% for it in item %}
+<div class='col-12 col-sm-6 col-md-5 align-self-center text-center'>
+<img  class="im" src="{{it.item_image.url}}" alt='{{it.item_name}}' style='width:100%;height:auto;'  / >
+</div>
+
+<div class='col-12 col-sm-6 col-md-4 align-self-center text-center' style='font-size:150%;'>
+
+<h1  > {{it.item_discription}} </h1>
+{% if it.item_offer > 0 %}
+<p>M.R.P.:₹ <span style='text-decoration: line-through'>	{{it.item_Price}}</span></p>
+
+<p>Deal of the Day:	₹{{item_total}} Fulfilled</p>
+
+<p>You Save:	₹{{it.item_offer}} ({{offer_perent}}%)</p>
+{% else %}
+<p>M.R.P.:₹ {{it.item_Price}}</p>
+
+<p>Deal of the Day:	₹{{item_total}} Fulfilled</p>
+{% endif %}
+<p>Inclusive of all taxes
+FREE delivery: Saturday, Nov 6 Details</p>
+<p > Sold By : {{it.sold_by}} </p>
+<p> In Stock : {{it.in_stoke}} items </p>
+<!-- class=parent-block-->
+ <h2> Delivery:</h2> 
+ 
+<div class=' row' >
+
+<div class='col-3 col-sm-6 col-md-3' >
+<img  onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/pay-on-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p style="cursor: pointer;" onclick="myFun1(this)">Pay on delivery</p>
+</div>
+<div class='col-3 col-sm-6 col-md-3'>
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/10-days-returnable.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p style="cursor: pointer;" onclick="myFun2(this)">10days returnable </p>
+</div>
+<div class='col-3 col-sm-6 col-md-3' >
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/Amazon-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p style="cursor: pointer;" onclick="myFun3(this)">Amazon delivery</p>
+</div>
+<div class='col-3 col-sm-6 col-md-3'>
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)"  src='{% static 'myapp/image/No-contact-delivery.jpg'   %}' alt='whatApp' width='50' height='50' / >
+<p style="cursor: pointer;" onclick="myFun4(this)">No-contact</p>
+</div>
+<!--pay on card -->
+<div id="popup1" style="display: none;   overflow: hidden;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+<h3>What is Pay on Delivery (Cash/Card)?</h3>
+Pay on Delivery (Cash/Card) payment method includes Cash on Delivery (COD) as well as Debit card / Credit card / Net banking payments at your doorstep 
+</div>
+<!---->
+<!--pay on card -->
+<div id="popup2" style="display: none;   overflow: hidden;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+<h3>Return Policy!</h3>
+<p>Mobiles (new and certified refurbished)</p>
+<p>7 Days Replacement</p>
+<p>This item is eligible for free replacement, within 7 days of delivery, in an unlikely event of defective or different item delivered to you. In the rare event that you receive a damaged device, please create a replacement request within 48 hours of order delivery. Raising a replacement request any time after 48 hours of order delivery will result in your replacement request being rejected. Please note that we will provide a replacement for only those products where damage is not caused by the customer in any manner whatsoever.</p>
+
+<p>For device-related issues,</p>
+
+<p>Apple iPhones: Please contact Apple Customer Service.</p>
+
+<p>Android smartphones: Our Returns Centre will prompt you to download the diagnostic app to diagnose issues with your defective smartphone. We will provide a resolution on the basis of the diagnostic app results. In certain cases, we may also schedule a technician visit to your location who may also use diagnostic app to validate defects in your device and provide resolution accordingly.</p>
+
+<p>iQOO Z3 smartphones purchased from 26th July to 27th July are also eligible for return within 7 days of delivery for full refund, in case you are facing performance related issues.</p>
+
+<p>For any return/replacement, please keep the item in its original condition (i.e. the condition in which it was delivered to you), with brand outer box, user manual, warranty cards, earphone, charger and other original accessories in manufacturer packaging for a successful return pick-up.</p>
+</div>
+<!-- -->
+<div id="popup3" style="display: none;   overflow: hidden;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+<h3>Amazon Delivered</h3>
+<p>Amazon directly manages delivery for this product. Order delivery tracking to your doorstep is available.</p>
+</div>
+<!-- -->
+<div id="popup4" style="display: none;   overflow: hidden;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+<h3>No-Contact Delivery</h3>
+<p>Delivery Associate will place the order on your doorstep and step back to maintain a 2-meter distance.</p>
+
+<p>No customer signatures are required at the time of delivery.</p>
+
+<p>For Pay-on-Delivery orders, we recommend paying using Credit card/Debit card/Netbanking via the pay-link sent via SMS at the time of delivery. To pay by cash, place cash on top of the delivery box and step back.</p>
+</div>
+<!---->
+</div>
+</div>
+
+<div class='col d-sm-none  col-md-3 d-md-block '  >
+<div  style='  width:100%; font-size:170%;  border:1px solid rgba(0,0,0,.2); border-radius:4px;padding:8px 8px 8px 8px; margin:0px;'>
+<center>
+<p>Share:
+<a href='https://web.whatsapp.com'target='_blank' ><img src='{% static 'myapp/image/whatsapp-icon.png'   %}' alt='whatApp' width='21' height='21' / ></a>
+<a href='https://www.facebook.com' target='_blank' ><img src='{% static 'myapp/image/facebook-icon.jpg'   %}' alt='facebook' width='21' height='21' / ></a>
+<a href='https://twitter.com' target='_blank'  ><img src='{% static 'myapp/image/tweeter-icon.png'   %}' alt='Twitter' width='21' height='21' / ></a>
+<a href='https://webmail.au.syrahost.com' target='_blank'><img src='{% static 'myapp/image/email.jpg'   %}' alt='Email' width='25' height='25' / ></a>
+</p>
+
+ <p>Quality : {{it.quality}}</p>
+<form action="" method="post">
+{% csrf_token %}
+<input type="text" value="{{it.id}}" name="cartItm" hidden>
+
+<div class="row">
+    {% comment %} <div class="col-3 col-sm-5"> 
+    </div> {% endcomment %}
+    <div class="col-6 col-sm-4">
+        <input type="submit" class='btn btn-success 'style='width:15em;font-size:0.7em;border-radius: 12px;' value="Add to Cart " > 
+    </div> 
+</div>
+</form>
+
+<div class="row">
+    {% comment %} <div class="col-3 col-sm-5">
+    </div> {% endcomment %}
+    <div class="col-6 col-sm-4">
+    <a href="{% url 'order' it.id %}">
+        <input type="submit" class='btn btn-success 'style='width:15em;font-size:0.7em;border-radius: 12px;' value="Buy Now " > 
+    </a>
+    </div> 
+</div>
+<p>@ Fulfilled FREE Delivery </p>
+</center>
+</div>
+</div>
+
+</div>
+<!-- display from small to mediucm-->
+<div class="row">
+<div class="col-12  d-block d-md-none ">
+<div  style='  width:100%; font-size:170%;  border:1px solid grey; border-radius:4px;padding:8px 8px 8px 8px; margin:0px;'>
+<center>
+<p>Share:
+<a href='https://web.whatsapp.com'target='_blank' ><img src='{% static 'myapp/image/whatsapp-icon.png'   %}' alt='whatApp' width='21' height='21' / ></a>
+<a href='https://www.facebook.com' target='_blank' ><img src='{% static 'myapp/image/facebook-icon.jpg'   %}' alt='facebook' width='21' height='21' / ></a>
+<a href='https://twitter.com' target='_blank'  ><img src='{% static 'myapp/image/tweeter-icon.png'   %}' alt='Twitter' width='21' height='21' / ></a>
+<a href='https://webmail.au.syrahost.com' target='_blank'><img src='{% static 'myapp/image/email.jpg'   %}' alt='Email' width='25' height='25' / ></a>
+</p>
+
+ <p>Quality : {{it.quality}}</p>
+
+<form action="" method="post">
+{% csrf_token %}
+<input type="text" value="{{it.id}}" name="cartItm" hidden> 
+
+
+<div class="row">
+    <div class="col-3 col-sm-5">
+    </div>
+    <div class="col-6 col-sm-4">
+       <input type="submit" class='btn btn-success 'style='width:15em;font-size:0.7em;border-radius: 12px;' value="Add to Cart " > 
+
+    </div> 
+</div>
+</form>
+<div class="row">
+    <div class="col-3 col-sm-5">
+    </div>
+    <div class="col-6 col-sm-4">
+     <a href="{% url 'order' it.id %}">
+       <input type="submit" class='btn btn-success 'style='width:15em;font-size:0.7em;border-radius: 12px;' value="Buy Now " > 
+     </a>
+    </div> 
+</div>
+
+<p>@ Fulfilled FREE Delivery </p>
+</center>
+</div>
+</div>
+</div>
+
+
+{% endfor %}
+
+
+
+<!--start of question-->
+
+<div class='jumbotron'>
+<div class='row'>
+<div class='col-12 col-sm-12'>
+
+<center>
+<h1 > Have a Question ? </h1>
+<form method='POST'>
+{% csrf_token %}
+{{form.as_p}}
+<div class="row">
+    <div class="col-3 col-sm-4">
+    </div>
+    <div class="col-6 col-sm-4">
+       
+        <button type="submit" class="btn btn-primary  ">Add Your Questions!</button>
+    </div>
+  </div>
+</form>
+ {% if qust %}
+ {% for q in qust  %}
+ {% if q.answer %}
+ <p > Related Question and answer : </p>
+ <p > Question : {{q.question}}</p>
+ <p> Answer:  {{q.answer}} </p>
+ {% endif %}
+ {% endfor %}
+ {% endif %}
+
+</center>
+
+</div>
+</div>
+</div>
+<!--end of question-->
+
+<!--start of releted item-->
+ <h3>Customers who bought this item also bought</h3> 
+
+<div class=''>
+<center > <h2> Related items </h2> </center>
+ <div class="row  "  >
+{% for itm in related_item %}
+  <div class="col-12 col-sm-6 col-md-3 align-self-center text-center " >
+    <a href={% url 'kitchen'  itm.pk %} >
+    <img id='kitchen1' src="{{itm.item_image.url}}" class="card-img-top" alt="{{itm.time_name}}" width='100' height='250'>
+    <div class="card-body cards">
+      <p >{{itm.item_discription}}</p>
+      {% if itm.item_offer > 0 %}
+      <p >{{itm.item_name}} Price:   <span style='text-decoration: line-through'  > {{itm.item_Price}}</span></p>
+      <p > Save :{{itm.item_offer}}</p>
+      {% else %}
+      <p> {{itm.item_name}} Price :{{itm.item_Price}}</p>
+      {% endif %}
+    </div>
+  </a>
+  </div>
+  {% endfor %}
+</div>
+</div>
+<!--end of releted item-->
+
+<!--start of comments-->
+<div class='jumbotron'>
+<center>
+<h1 >  Add some comments ! </h1>
+<form method='POST'>
+{% csrf_token %}
+{{form.as_p}}
+<div class="row">
+    <div class="col-3 col-sm-4">
+    </div>
+    <div class="col-6 col-sm-4">
+       
+        <button type="submit" class="btn btn-primary  ">Add your Comment</button>
+    </div>
+    </div>
+</form>
+</center>
+
+</div>
+
+
+</div>
+ 
+<script src='{% static 'myapp/js/jscript.js' %}'></script>
+
+
+</div>
+{% endblock  %}

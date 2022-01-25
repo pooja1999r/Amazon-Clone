@@ -1,0 +1,171 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+<div class="jumbotron">
+{% if user.is_authenticated  %}
+{% if item %}
+<!-- center-->
+<center >
+<h2 style="display:inline">Subtotal :- </h2> ₹ 
+<p style="font-size:2em; display:inline;">  <strong > {{sum}}</strong> </p>
+<p> of ({{total_item}})
+        {% if total_item > 1 %}
+        items
+      {% else %}
+      item
+      {% endif %}  </p>
+</center>
+{% comment %} <div class="row">
+    <div class="col-3 col-sm-5">
+    </div>
+    <div class="col-6 col-sm-4">
+      <a href="{% url 'oder' sum %}">
+        <button style="display:block;" class="btn btn-primary " >Proceed to Buy ({{total_item}})
+        {% if total_item > 1 %}
+        items
+      {% else %}
+      item
+      {% endif %}</button>
+      </a>
+    </div> 
+</div> {% endcomment %}
+
+
+</div>
+
+ {% for num,qury in item.items %}
+{% for i in qury %}
+<div style="border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    border-radius: 4px;
+     box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+<div class="row " >
+    <div class="col-12 col-sm-6 align-self-center text-center  ">
+       {% if i.item_image %}
+      <img src= '{{i.item_image.url}}' alt='{{i.item_name}}' width='200' height='200' / >
+      {% else %}
+      <p> saller doesn't provide image </P>
+      {% endif %}
+    </div>
+    <div class="col-12 col-sm-6 text-center align-self-center  ">
+         <p style="font-size:1.5em; font-weight:bold;" > {{i.item_discription}}</p>
+        {% if i.item_offer > 0 %}
+       <p> {{i.item_name}} Price: <span style='text-decoration: line-through'> ₹ {{i.item_Price}} </span></p>
+       <p> Save :₹  {{i.item_Price}}</p>
+       {% else %}
+       <p> {{i.item_name}} Price:₹  {{i.item_Price}} </p>
+      {% endif %}
+      <p> In Stock: {{i.in_stoke}}</p>
+      <p> Sold By: {{i.sold_by}}</p>
+    </div>
+</div>
+
+<div class="row " >
+      <div class="col-2 col-sm-3">
+      </div>
+
+      <div class="col-2 col-sm-1 align-self-center text-center">
+         <form  action="{% url 'add-del' %}" method="post">
+            {% csrf_token %}
+            <input type="text" value="{{i.id}}" name="del" hidden>
+            <button  class="btn btn-primary" type="submit"> <i class="fa fa-trash" aria-hidden="true"></i> </button> 
+          </form> 
+      </div>
+      <div class="col-1 col-sm-1 align-self-center text-center">
+          <p> {{num}}</p>
+      </div>
+      <div class="col-2 col-sm-1 align-self-center text-center">
+             <form action="{% url 'add-del' %}" method="post">
+            {% csrf_token %}
+            <input type="text" value="{{i.id}}" name="add" hidden>
+            <button  class="btn btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+            
+             </form>  
+      </div>
+       
+      <div class=" col-sm-3 bg-success offset-1 d-none d-sm-block">
+        <a href="{% url 'order' i.id %}">
+        <center>
+        <button style="display:block;" class="btn btn-success  " >Proceed to Buy </button>
+        </center>
+        </a>
+    </div> 
+
+           <div class="col-3  bg-success d-block d-sm-none">
+              <a href="{% url 'order' i.id %}">
+              <center>
+              <button style="display:block;" class="btn btn-success  " >Buy </button>
+              </center>
+             </a>
+          </div> 
+
+        
+   
+</div>
+{% comment %} 
+<div class="row">
+    <div class="col-3 col-sm-5">
+    </div>
+    <div class="col-6 col-sm-4">
+      <a href="{% url 'order' i.id %}">
+        <button style="display:block;" class="btn btn-primary " >Proceed to Buy </button>
+      </a>
+    </div>  {% endcomment %}
+
+{% endfor %}
+{% endfor %}
+
+{% if related_item %}
+<div class="jumbotron">
+    <center>
+    <h3> Relateds Items </h3>
+    </center>
+</div>
+
+{% for it in related_item%}
+{% for i in it %}
+<a href={% url 'kitchen'  i.pk %}   >
+<div class="row " style="border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.2);
+    border-radius: 4px;
+     box-shadow: 0 2px 4px rgb(0 0 0 / 13%);
+    background-color: #fff;">
+    <div class="col-12 col-sm-6  align-self-center text-center  ">
+       {% if i.item_image %}
+      <img src= '{{i.item_image.url}}' alt='{{i.item_name}}' width='200' height='200' / >
+      {% else %}
+      <p> saller doesn't provide image </P>
+      {% endif %}
+    </div>
+    <div class="col-12 col-sm-6  align-self-center text-center " >
+         <p style="font-size:1.5em; font-weight:bold;" > {{i.item_discription}}</p>
+        {% if i.item_offer > 0 %}
+       <p> {{i.item_name}} Price: <span style='text-decoration: line-through'> ₹ {{i.item_Price}} </span></p>
+       <p> Save :₹  {{i.item_Price}}</p>
+       {% else %}
+       <p> {{i.item_name}} Price:₹  {{i.item_Price}} </p>
+      {% endif %}
+      <p> In Stock: {{i.in_stoke}}</p>
+      <p> Sold By: {{i.sold_by}}</p>
+    </div>
+</div>
+</a>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+<!-- endif of items-->
+{% endif %}
+
+{% else %}
+<center class="bg-warning">
+<p > Ooopss Something Wrong !</p>
+
+</center>
+
+
+<!--user authenticate endif-->
+{% endif %}
+
+
+{% endblock  %}

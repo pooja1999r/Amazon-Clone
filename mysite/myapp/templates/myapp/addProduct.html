@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block body_block %}
+<div class='container'>
+<div class='jumbotron'>
+
+
+
+ <form method='post' enctype='multipart/form-data'>
+ {% csrf_token %}
+ 
+   {{ form|crispy}}
+   {{form1|crispy}}
+   <center>
+    <button style="background: black; font-size: 2rem; padding:1%;" class="btn btn-outline-info" type="submit">Add product</button>
+  </center>
+  </form>
+  </div>
+  </div>
+{% endblock %}
